@@ -165,13 +165,14 @@ function visualize_platform_batch(vis, N, dt, x0, X, U, xf, params, obs=false, n
     d = [norm(x0[r_inds[i]] - x_anc[i]) for i = 1:num_lift]
 
     # Initialize System
-    traj_folder = joinpath(dirname(pathof(TrajectoryOptimization)),"..")
-    urdf_folder = joinpath(traj_folder, "dynamics","urdf")
-    obj = joinpath(urdf_folder, "quadrotor_base.obj")
+    obj = joinpath("assets/quadrotor.obj")
 
     quad_scaling = 0.085
     robot_obj = FileIO.load(obj)
-    robot_obj.vertices .= robot_obj.vertices .* quad_scaling
+    if isnothing(robot_obj)
+        error("Failed to load OBJ file: $obj")
+    end
+    #robot_obj.vertices .= robot_obj.vertices .* quad_scaling
     # Spawn the platform
     setobject!(vis["platform"], Cylinder(Point3f0(0,0,-h/2), Point3f0(0,0,h/2),convert(Float32,r_plat)),MeshPhongMaterial(color=RGBA(0, 1, 0, 1.0)))
     setobject!(vis["platform"]["center"], HyperSphere(Point3f0(zeros(3)), convert(Float32,0.05)) ,MeshPhongMaterial(color=RGBA(1, 0, 1, 0.99)))
