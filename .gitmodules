@@ -1,0 +1,4 @@
+[submodule "TrajectoryOptimization.jl"]
+	path = TrajectoryOptimization.jl
+	url = https://github.com/MAminSFV/TrajectoryOptimization.jl.git
+	branch = distributed_team_lift
