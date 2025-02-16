@@ -17,7 +17,7 @@ include("methods.jl")
 verbose=false
 
 # First create UnconstrainedSolverOptions instead of iLQRSolverOptions
-opts_ilqr = TO.UnconstrainedSolverOptions(verbose=verbose,
+opts_ilqr = TO.iLQRSolverOptions(verbose=verbose,
       iterations=75)
 
 opts_al = AugmentedLagrangianSolverOptions{Float64}(verbose=verbose,
