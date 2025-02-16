@@ -1,0 +1,15 @@
+{
+    "name": "Julia 1.6",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    // Set customizations for the container.
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "julialang.language-julia",
+                "streetsidesoftware.code-spell-checker"
+            ]
+        }
+    }
+}
