@@ -23,7 +23,7 @@ end
 
 # NOTE - Obstacle course!
 function plot_cylinder(vis,c1,c2,radius,mat,name="")
-    geom = Cylinder(Point3f0(c1),Point3f0(c2),convert(Float32,radius))
+    geom = Cylinder(Point3f(c1),Point3f(c2),convert(Float32,radius))
     setobject!(vis["cyl"][name],geom,MeshPhongMaterial(color=RGBA(1, 0, 0, 1.0)))
 end
 
@@ -66,15 +66,15 @@ function visualize_quadrotor_lift_system(vis, probs, obs=false, n_slack=3)
     # NOTE - Setting only agents, their quad mesh and cables, later positioning them
     for i = 1:num_lift
         # Quadrotor
-        # setobject!(vis["lift$i"]["sphere"],HyperSphere(Point3f0(0), convert(Float32,r_lift)) ,MeshPhongMaterial(color=RGBA(0, 0, 0, 0.25)))
+        # setobject!(vis["lift$i"]["sphere"],HyperSphere(Point3f(0), convert(Float32,r_lift)) ,MeshPhongMaterial(color=RGBA(0, 0, 0, 0.25)))
         setobject!(vis["lift$i"]["robot"],robot_obj,MeshPhongMaterial(color=RGBA(0, 0, 0, 1.0)))
         # Cable
-        cable = Cylinder(Point3f0(0,0,0),Point3f0(0,0,d[i]),convert(Float32,0.01))
+        cable = Cylinder(Point3f(0,0,0),Point3f(0,0,d[i]),convert(Float32,0.01))
         setobject!(vis["cable"]["$i"],cable,MeshPhongMaterial(color=RGBA(1, 0, 0, 1.0)))
     end
 
     # NOTE - Setting the load
-    setobject!(vis["load"],HyperSphere(Point3f0(0), convert(Float32,r_load)) ,MeshPhongMaterial(color=RGBA(0, 1, 0, 1.0)))
+    setobject!(vis["load"],HyperSphere(Point3f(0), convert(Float32,r_load)) ,MeshPhongMaterial(color=RGBA(0, 1, 0, 1.0)))
 
     anim = MeshCat.Animation(convert(Int,floor(1/prob_lift[1].dt)))
     for k = 1:prob_lift[1].N
@@ -117,10 +117,10 @@ function visualize_batch(vis,prob,obs=true,num_lift=3)
     robot_obj.vertices .= robot_obj.vertices .* quad_scaling
     for i = 1:num_lift
         setobject!(vis["lift$i"],robot_obj,MeshPhongMaterial(color=RGBA(0, 0, 0, 1.0)))
-        cable = Cylinder(Point3f0(0,0,0),Point3f0(0,0,d),convert(Float32,0.01))
+        cable = Cylinder(Point3f(0,0,0),Point3f(0,0,d),convert(Float32,0.01))
         setobject!(vis["cable"]["$i"],cable,MeshPhongMaterial(color=RGBA(1, 0, 0, 1.0)))
     end
-    setobject!(vis["load"],HyperSphere(Point3f0(0), convert(Float32,0.2)) ,MeshPhongMaterial(color=RGBA(0, 1, 0, 1.0)))
+    setobject!(vis["load"],HyperSphere(Point3f(0), convert(Float32,0.2)) ,MeshPhongMaterial(color=RGBA(0, 1, 0, 1.0)))
 
     anim = MeshCat.Animation(convert(Int,floor(1.0/prob.dt)))
     for k = 1:prob.N
@@ -174,18 +174,18 @@ function visualize_platform_batch(vis, N, dt, x0, X, U, xf, params, obs=false, n
     end
     #robot_obj.vertices .= robot_obj.vertices .* quad_scaling
     # Spawn the platform
-    setobject!(vis["platform"], Cylinder(Point3f0(0,0,-h/2), Point3f0(0,0,h/2),convert(Float32,r_plat)),MeshPhongMaterial(color=RGBA(0, 1, 0, 1.0)))
-    setobject!(vis["platform"]["center"], HyperSphere(Point3f0(zeros(3)), convert(Float32,0.05)) ,MeshPhongMaterial(color=RGBA(1, 0, 1, 0.99)))
+    setobject!(vis["platform"], Cylinder(Point3f(0,0,-h/2), Point3f(0,0,h/2),convert(Float32,r_plat)),MeshPhongMaterial(color=RGBA(0, 1, 0, 1.0)))
+    setobject!(vis["platform"]["center"], HyperSphere(Point3f(zeros(3)), convert(Float32,0.05)) ,MeshPhongMaterial(color=RGBA(1, 0, 1, 0.99)))
     rfLoad = xf[num_lift+1][1:3]
-    setobject!(vis["GoalLoad"],HyperSphere(Point3f0(rfLoad), convert(Float32,0.1)) ,MeshPhongMaterial(color=RGBA(1, 0, 0, 0.7)))
+    setobject!(vis["GoalLoad"],HyperSphere(Point3f(rfLoad), convert(Float32,0.1)) ,MeshPhongMaterial(color=RGBA(1, 0, 0, 0.7)))
     # Spawn Lift agents
     for i = 1:num_lift
         rfLift = xf[i][1:3]
         setobject!(vis["lift$i"],robot_obj,MeshPhongMaterial(color=RGBA(0, 0, 0, 1.0)))
-        cable = Cylinder(Point3f0(0,0,0), Point3f0(0,0,d[i]),convert(Float32,0.01))
+        cable = Cylinder(Point3f(0,0,0), Point3f(0,0,d[i]),convert(Float32,0.01))
         setobject!(vis["cable"]["$i"],cable,MeshPhongMaterial(color=RGBA(1, 0, 0, 1.0)))
-        setobject!(vis["platform"]["anchor$i"],HyperSphere(Point3f0(r_anc[i]), convert(Float32,0.05)) ,MeshPhongMaterial(color=RGBA(0, 0, 1, 1.0)))
-        setobject!(vis["Goal$i"],HyperSphere(Point3f0(rfLift), convert(Float32,0.1)) ,MeshPhongMaterial(color=RGBA(1, 0, 0, 0.7)))
+        setobject!(vis["platform"]["anchor$i"],HyperSphere(Point3f(r_anc[i]), convert(Float32,0.05)) ,MeshPhongMaterial(color=RGBA(0, 0, 1, 1.0)))
+        setobject!(vis["Goal$i"],HyperSphere(Point3f(rfLift), convert(Float32,0.1)) ,MeshPhongMaterial(color=RGBA(1, 0, 0, 0.7)))
     end
 
 
@@ -309,21 +309,22 @@ function plot_agents(N, dt, x0, X, U, xf, name ,num_lift)
     #statedot = plot(xdp, qd1p, ydp, qd2p, zdp, qd3p, layout=l, title = "Agent State Velocities") #FIXME
     #uCable = plot(t, uCable, title = "Cable Forces", label = lbl2, lw = lwd)
     #rotor = plot(t, uRotor, title = "Cable Forces", label = lbl2, lw = lwd) #FIXME
-    dir = mkpath("./plots/$name")
-    savefig(xp, dir*"/$name-Ex.svg")
-    savefig(yp, dir*"/$name-Ey.svg")
-    savefig(zp, dir*"/$name-Ez.svg")
-    savefig(q1p, dir*"/$name-Eq1.svg")
-    savefig(q2p, dir*"/$name-Eq2.svg")
-    savefig(q3p, dir*"/$name-Eq3.svg")
-    #
-    savefig(xdp, dir*"/$name-xd.svg")
-    savefig(ydp, dir*"/$name-yd.svg")
-    savefig(zdp, dir*"/$name-zd.svg")
-    savefig(qd1p, dir*"/$name-qd1.svg")
-    savefig(qd2p, dir*"/$name-qd2.svg")
-    savefig(qd3p, dir*"/$name-qd3.svg")
-    #savefig(statedot, "statedot.svg")
-    #savefig(uCable, "uCable.svg")
-    #savefig(rotor, "rotors.svg")
+    plot_dir = joinpath("plots", name)
+    mkpath(plot_dir)
+    format = "svg"
+    savefig(xp, joinpath(plot_dir, "Ex.$format"))
+    savefig(yp, joinpath(plot_dir, "Ey.$format"))
+    savefig(zp, joinpath(plot_dir, "Ez.$format"))
+    savefig(q1p, joinpath(plot_dir, "Eq1.$format"))
+    savefig(q2p, joinpath(plot_dir, "Eq2.$format"))
+    savefig(q3p, joinpath(plot_dir, "Eq3.$format"))
+    savefig(xdp, joinpath(plot_dir, "xd.$format"))
+    savefig(ydp, joinpath(plot_dir, "yd.$format"))
+    savefig(zdp, joinpath(plot_dir, "zd.$format"))
+    savefig(qd1p, joinpath(plot_dir, "qd1.$format"))
+    savefig(qd2p, joinpath(plot_dir, "qd2.$format"))
+    savefig(qd3p, joinpath(plot_dir, "qd3.$format"))
+    #savefig(statedot, "statedot.$format")
+    #savefig(uCable, "uCable.$format")
+    #savefig(rotor, "rotors.$format")
 end
