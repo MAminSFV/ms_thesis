@@ -84,11 +84,11 @@ if false
 X_cache, U_cache, X_lift, U_lift = init_cache(prob_load, probs);
 fetch(@spawnat 1 length(X_cache[:L]))
 cache = (X_cache=X_cache, U_cache=U_cache, X_lift=X_lift, U_lift=U_lift);
-# !SECTION 
+# !SECTION
 
 # SECTION - Visualization
 
-include("visualization.jl")
+include("animation.jl")
 vis = Visualizer()
 open(vis)
 visualize_quadrotor_lift_system(vis, sol, obs)
@@ -128,8 +128,8 @@ println(sol[3].x0[1:3])
 println(sol[4].x0[1:3])
 
 # REVIEW - What again?
-include("visualization.jl")
+include("animation.jl")
 vis = Visualizer()
 open(vis)
 visualize_quadrotor_lift_system(vis, sol)
-# !SECTION 
+# !SECTION

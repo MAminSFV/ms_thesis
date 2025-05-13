@@ -12,7 +12,7 @@ const TO = TrajectoryOptimization
 
 include("problem.jl")
 include("methods.jl")
-include("visualization.jl")
+include("animation.jl")
 # Solver options
 verbose=false
 

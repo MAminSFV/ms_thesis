@@ -44,7 +44,7 @@ r0_load = [0, 0, 0.25]
 t_cache = Float64[]
 t_cache_seq = Float64[]
 num_lift_cache = collect(3:15)
-# include("visualization.jl")
+# include("animation.jl")
 # vis = Visualizer()
 # open(vis)
 

@@ -2,7 +2,7 @@
 using TrajectoryOptimization
 const TO = TrajectoryOptimization
 
-include(joinpath(@__DIR__, "visualization.jl"))
+include(joinpath(@__DIR__, "animation.jl"))
 include(joinpath(@__DIR__, "problem.jl"))
 include(joinpath(@__DIR__, "methods.jl"))
 
@@ -19,7 +19,7 @@ function get_trajs(; verbose=true, visualize=true, num_lift=10)
     prob = setup()
     quat = true
     r0_load = [0,0,1]
-    
+
     opts_ilqr = iLQRSolverOptions(verbose=verbose,
       iterations=50)
 
@@ -44,9 +44,9 @@ function get_trajs(; verbose=true, visualize=true, num_lift=10)
         vis = Visualizer()
         open(vis)
         visualize_batch(vis,prob,true,num_lift)
-    end    
-    @info "stats" solver.stats[:iterations] max_violation(prob)   
-    return prob 
+    end
+    @info "stats" solver.stats[:iterations] max_violation(prob)
+    return prob
 end
 
 get_trajs()

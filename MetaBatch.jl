@@ -5,7 +5,7 @@ using Distributions, Random
 using TrajectoryOptimization
 
 const TO = TrajectoryOptimization
-include("visualization.jl")
+include("animation.jl")
 include("problem.jl")
 include("methods.jl")
 
@@ -25,7 +25,7 @@ opts_al = AugmentedLagrangianSolverOptions{Float64}(verbose=verbose,
     penalty_initial=1.0e-3)
 
 
-# Scenario, Config, & agent selection 
+# Scenario, Config, & agent selection
 
 num_lift = 6 # Number of Quadrotors
 
@@ -56,7 +56,7 @@ q0_platform = [1. 0. 0. 0.]
 x0_platform = [r0_platform q0_platform]
 
 expList = []
-for i=1:5 
+for i=1:5
     # Generate the problem
     prob, xf = gen_prob(agent, quad_params, platform_params, r0_platform;
                 scenario=scenario, num_lift=num_lift, N=N, quat=quat, config=:platform, dt=dt)
@@ -81,8 +81,5 @@ for exp in expList
     open(vis)
     visualize_platform_batch(vis, N, dt, x0, X, U, xf, platform_params, false, num_lift)
     #
-    plot_agents( N, dt, x0, X, U, xf, name, num_lift) 
+    plot_agents( N, dt, x0, X, U, xf, name, num_lift)
 end
-
-
-

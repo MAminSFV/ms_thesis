@@ -2,7 +2,7 @@ using ForwardDiff, LinearAlgebra, Plots, StaticArrays
 const TO = TrajectoryOptimization
 using BenchmarkTools
 
-include("visualization.jl")
+include("animation.jl")
 include("problem.jl")
 include("methods.jl")
 

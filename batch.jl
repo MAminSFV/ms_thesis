@@ -3,10 +3,10 @@ using ForwardDiff, LinearAlgebra, Plots, StaticArrays
 using Combinatorics
 using TrajectoryOptimization
 const TO = TrajectoryOptimization
-include("visualization.jl")
+include("animation.jl")
 include("problem.jl")
 include("methods.jl")
-# !SECTION 
+# !SECTION
 
 # SECTION - Solver options
 
@@ -41,7 +41,7 @@ scenario = :doorway
 prob = gen_prob(:batch, quad_params, load_params, r0_load, scenario=scenario,num_lift=num_lift,quat=quat)
 TO.has_quat(prob.model)
 
-# !SECTION 
+# !SECTION
 
 # SECTION - Solve the optimization problem + Simulation
 # REVIEW - what Are trim conditions? What do they do? Do they do things?
@@ -53,9 +53,9 @@ prob = trim_conditions_batch(num_lift, r0_load, quad_params, load_params, quat, 
 @btime solve($prob, $opts_al)
 @time solver = solve!(prob, opts_al)
 
-# !SECTION 
+# !SECTION
 
-# SECTION - The Holly task of visualization and post processing 
+# SECTION - The Holly task of visualization and post processing
 vis = Visualizer()
 open(vis)
 
@@ -68,4 +68,4 @@ Notes:
 N lift is faster with trim conditions
 Doorway is also faster with trim conditions
 =#
-# !SECTION 
+# !SECTION

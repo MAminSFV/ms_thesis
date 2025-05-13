@@ -5,9 +5,11 @@ using Rotations
 using Distributions, Random
 using TrajectoryOptimization
 using Revise
+using Dates
 
 const TO = TrajectoryOptimization
-include("visualization.jl")
+#include("animation.jl")
+include("plotting.jl")
 include("problem.jl")
 include("methods.jl")
 # !SECTION
@@ -41,7 +43,7 @@ config = :platform
 agent  = :platform_batch
 cable = :elastic
 
-tf = 5
+tf = 0.1
 dt = 0.01
 N = convert(Int,floor(tf/dt))+1 # Determining the Number of knot points
 # Using quaternions
@@ -80,6 +82,8 @@ solver = solve!(prob, opts_al)
 solver.stats[:iterations]
 
 max_violation(prob)
-name = "Load Transportation with $num_lift Quadrotors"
+#generate date time
+now = Dates.now()
+name = "Load Transportation with $num_lift Quadrotors - $(Dates.format(now, "yyyy-mm-dd_HH-MM-SS"))"
 plot_agents(prob.N, prob.dt, prob.x0, prob.X, prob.U, xf, name, num_lift)
 # !SECTION
