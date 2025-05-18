@@ -1,5 +1,6 @@
 {
     "name": "Julia 1.6.7",
+    "image": "aminsfv/ms-thesis-dev:latest",
     "build": {
         "dockerfile": "Dockerfile"
     },

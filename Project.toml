@@ -1,3 +1,7 @@
+name = "ms_thesis"
+uuid = "7cf232b7-6b3a-422f-afa1-ecfd8c474a93"
+version = "0.1.0"
+
 [deps]
 BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
 Cairo = "159f3aea-2a34-519c-b102-8c37f9878175"
