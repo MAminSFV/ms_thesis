@@ -55,7 +55,7 @@ function get_quad_locations(x_load::VecOrMat, d::Real, α=π/4, num_lift=3;
                 x_lift[i][1:2] = circle(θ[i])
             end
             x_lift[i][3] = z
-            x_lift[i] += r_cables[i]  # Shift by attachment location
+            x_lift[i] += r_cables[i]  # Shift to attachment location
             end
     elseif config == :doorway
         y = x_load[2]
@@ -142,7 +142,9 @@ end
 """
 Takes the location of the load and generates a formation of lift agents poses (position + orientation).
 """
-function gen_set(r_load, num_lift=4; α=deg2rad(2), rnd=false, config=:platform, quad_params=quad_params, load_params=platform_params)
+function gen_set(r_load, num_lift=4; α=deg2rad(2), rnd=false, config=:platform, quad_params, load_params)
+    # Initialize variables that will be used across configs
+    local d, r_anc, mass_load, n_load
 
     # Cal d and α based on config
     # Can add scaling functions based on num_lift and r_plat
@@ -151,7 +153,6 @@ function gen_set(r_load, num_lift=4; α=deg2rad(2), rnd=false, config=:platform,
         r_anc = load_params.r_anc
         mass_load = load_params.m
         n_load = 13
-
     elseif config == :pointLoad
         d = 2.
         r_config = 1.2  # radius of initial configuration
@@ -162,9 +163,10 @@ function gen_set(r_load, num_lift=4; α=deg2rad(2), rnd=false, config=:platform,
         end
         n_load = 6
         α = asin(r_config/d)
+        r_anc = [zeros(3) for _ in 1:num_lift]
     end
-    n_lift = 13
 
+    n_lift = 13
     xlift, xload = get_states(r_load, n_lift, n_load, num_lift, d, α; config = config, r_anc=r_anc, rnd=rnd)
     ulift, uload = calc_static_forces(α, quad_params.m, mass_load, num_lift)
 

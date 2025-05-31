@@ -1,5 +1,3 @@
-#include(joinpath(dirname(@__FILE__),"../../dynamics/quaternions.jl"))
-
 # SECTION - Model Parameters
 
 """
@@ -23,10 +21,7 @@ function get_anchors_local(r::Real, num_lift=3)
 return r_anc
 end
 
-"""
-This function takes the load position and orientation and gives out the global coords of the anchors on the platform
 
-"""
 function get_anchors_global(x_platform, r_anc)
     p = x_platform[1:3]
     q = normalize(Quaternion(x_platform[4:7]))

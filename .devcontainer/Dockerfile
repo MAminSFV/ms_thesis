@@ -20,8 +20,8 @@ RUN curl -fsSL https://install.julialang.org | sh -s -- --yes && \
 # Copy the project files
 COPY . /workspaces/build
 
-# Prepare the environment (TODO: Find a reliable way to bring your deps and build them and use them in dev container)
+# Prepare the environment
 RUN julia --project=/workspaces/build/ -e 'using Pkg; Pkg.instantiate(); Pkg.precompile();'
 
-# Build the sysimage
-#RUN mkdir /workspaces/build/sysimage && julia --project=/workspaces/build/sysimage -e 'using Pkg; Pkg.develop(path="/workspaces/build/"); Pkg.add("PackageCompiler");  using PackageCompiler; create_sysimage(["ms_thesis"]; sysimage_path="/workspace/build/ms_thesis.so")'
+# Build the sysimage, a reliable way to bring deps and build them and use them in dev container
+RUN mkdir /workspaces/build/sysimage && julia --project=/workspaces/build/sysimage -e 'using Pkg; Pkg.develop(path="/workspaces/build/"); Pkg.add("PackageCompiler");  using PackageCompiler; create_sysimage(["ms_thesis"]; sysimage_path="/workspaces/bin/ms_thesis.so")'

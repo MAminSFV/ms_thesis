@@ -3,12 +3,8 @@ using Plots
 using MeshCat
 using GeometryTypes
 using CoordinateTransformations
-using FileIO
-using MeshIO
 using LinearAlgebra
 import TrajectoryOptimization: AbstractSolver, solve_aula!
-
-include("models.jl")
 
 # NOTE - Cable Util function
 function cable_transform(y,z)
@@ -23,7 +19,7 @@ end
 
 # NOTE - Obstacle course!
 function plot_cylinder(vis,c1,c2,radius,mat,name="")
-    geom = Cylinder(Point3f(c1),Point3f(c2),convert(Float32,radius))
+    geom = Cylinder(Point3f0(c1),Point3f0(c2),convert(Float32,radius))
     setobject!(vis["cyl"][name],geom,MeshPhongMaterial(color=RGBA(1, 0, 0, 1.0)))
 end
 
@@ -66,15 +62,15 @@ function visualize_quadrotor_lift_system(vis, probs, obs=false, n_slack=3)
     # NOTE - Setting only agents, their quad mesh and cables, later positioning them
     for i = 1:num_lift
         # Quadrotor
-        # setobject!(vis["lift$i"]["sphere"],HyperSphere(Point3f(0), convert(Float32,r_lift)) ,MeshPhongMaterial(color=RGBA(0, 0, 0, 0.25)))
+        # setobject!(vis["lift$i"]["sphere"],HyperSphere(Point3f0(0), convert(Float32,r_lift)) ,MeshPhongMaterial(color=RGBA(0, 0, 0, 0.25)))
         setobject!(vis["lift$i"]["robot"],robot_obj,MeshPhongMaterial(color=RGBA(0, 0, 0, 1.0)))
         # Cable
-        cable = Cylinder(Point3f(0,0,0),Point3f(0,0,d[i]),convert(Float32,0.01))
+        cable = Cylinder(Point3f0(0,0,0),Point3f0(0,0,d[i]),convert(Float32,0.01))
         setobject!(vis["cable"]["$i"],cable,MeshPhongMaterial(color=RGBA(1, 0, 0, 1.0)))
     end
 
     # NOTE - Setting the load
-    setobject!(vis["load"],HyperSphere(Point3f(0), convert(Float32,r_load)) ,MeshPhongMaterial(color=RGBA(0, 1, 0, 1.0)))
+    setobject!(vis["load"],HyperSphere(Point3f0(0), convert(Float32,r_load)) ,MeshPhongMaterial(color=RGBA(0, 1, 0, 1.0)))
 
     anim = MeshCat.Animation(convert(Int,floor(1/prob_lift[1].dt)))
     for k = 1:prob_lift[1].N
@@ -117,10 +113,10 @@ function visualize_batch(vis,prob,obs=true,num_lift=3)
     robot_obj.vertices .= robot_obj.vertices .* quad_scaling
     for i = 1:num_lift
         setobject!(vis["lift$i"],robot_obj,MeshPhongMaterial(color=RGBA(0, 0, 0, 1.0)))
-        cable = Cylinder(Point3f(0,0,0),Point3f(0,0,d),convert(Float32,0.01))
+        cable = Cylinder(Point3f0(0,0,0),Point3f0(0,0,d),convert(Float32,0.01))
         setobject!(vis["cable"]["$i"],cable,MeshPhongMaterial(color=RGBA(1, 0, 0, 1.0)))
     end
-    setobject!(vis["load"],HyperSphere(Point3f(0), convert(Float32,0.2)) ,MeshPhongMaterial(color=RGBA(0, 1, 0, 1.0)))
+    setobject!(vis["load"],HyperSphere(Point3f0(0), convert(Float32,0.2)) ,MeshPhongMaterial(color=RGBA(0, 1, 0, 1.0)))
 
     anim = MeshCat.Animation(convert(Int,floor(1.0/prob.dt)))
     for k = 1:prob.N
@@ -168,33 +164,27 @@ function visualize_platform_batch(vis, N, dt, x0, X, U, xf, params, obs=false, n
     obj = joinpath("assets/quadrotor.obj")
 
     quad_scaling = 0.085
-    robot_obj = FileIO.load(obj)
-    if isnothing(robot_obj)
-        error("Failed to load OBJ file: $obj")
-    end
-    #robot_obj.vertices .= robot_obj.vertices .* quad_scaling
+    robot_obj = MeshFileGeometry(obj)
     # Spawn the platform
-    setobject!(vis["platform"], Cylinder(Point3f(0,0,-h/2), Point3f(0,0,h/2),convert(Float32,r_plat)),MeshPhongMaterial(color=RGBA(0, 1, 0, 1.0)))
-    setobject!(vis["platform"]["center"], HyperSphere(Point3f(zeros(3)), convert(Float32,0.05)) ,MeshPhongMaterial(color=RGBA(1, 0, 1, 0.99)))
+    setobject!(vis["platform"], Cylinder(Point3f0(0,0,-h/2), Point3f0(0,0,h/2), convert(Float32,r_plat)), MeshPhongMaterial(color=RGBA(0, 1, 0, 1.0)))
+    setobject!(vis["platform"]["center"], HyperSphere(Point3f0(zeros(3)), convert(Float32,0.05)) ,MeshPhongMaterial(color=RGBA(1, 0, 1, 0.99)))
     rfLoad = xf[num_lift+1][1:3]
-    setobject!(vis["GoalLoad"],HyperSphere(Point3f(rfLoad), convert(Float32,0.1)) ,MeshPhongMaterial(color=RGBA(1, 0, 0, 0.7)))
+    setobject!(vis["GoalLoad"],HyperSphere(Point3f0(rfLoad), convert(Float32,0.1)) ,MeshPhongMaterial(color=RGBA(1, 0, 0, 0.7)))
     # Spawn Lift agents
     for i = 1:num_lift
         rfLift = xf[i][1:3]
-        setobject!(vis["lift$i"],robot_obj,MeshPhongMaterial(color=RGBA(0, 0, 0, 1.0)))
-        cable = Cylinder(Point3f(0,0,0), Point3f(0,0,d[i]),convert(Float32,0.01))
+        setobject!(vis["lift$i"], robot_obj, MeshPhongMaterial(color=RGBA(0, 0, 0, 1.0)))
+        cable = Cylinder(Point3f0(0,0,0), Point3f0(0,0,d[i]),convert(Float32,0.01))
         setobject!(vis["cable"]["$i"],cable,MeshPhongMaterial(color=RGBA(1, 0, 0, 1.0)))
-        setobject!(vis["platform"]["anchor$i"],HyperSphere(Point3f(r_anc[i]), convert(Float32,0.05)) ,MeshPhongMaterial(color=RGBA(0, 0, 1, 1.0)))
-        setobject!(vis["Goal$i"],HyperSphere(Point3f(rfLift), convert(Float32,0.1)) ,MeshPhongMaterial(color=RGBA(1, 0, 0, 0.7)))
+        setobject!(vis["platform"]["anchor$i"],HyperSphere(Point3f0(r_anc[i]), convert(Float32,0.05)) ,MeshPhongMaterial(color=RGBA(0, 0, 1, 1.0)))
+        setobject!(vis["Goal$i"],HyperSphere(Point3f0(rfLift), convert(Float32,0.1)) ,MeshPhongMaterial(color=RGBA(1, 0, 0, 0.7)))
     end
 
-
-
     # NOTE - Making the Animation
-    anim = MeshCat.Animation(convert(Int,floor(1.0/dt))) #prob.dt
+    anim = MeshCat.Animation() #prob.dt convert(Int,floor(1.0/dt))
     # For for frames
     for k = 1:N #prob.N
-        MeshCat.atframe(anim,vis,k) do frame
+        MeshCat.atframe(anim, k) do
             # Cables
             x_platform = X[k][num_lift*13 .+ (1:13)] #prob.X
             r_platform = x_platform[1:3]
@@ -204,11 +194,11 @@ function visualize_platform_batch(vis, N, dt, x0, X, U, xf, params, obs=false, n
             for i = 1:num_lift
                 r_lift = X[k][(i-1)*13 .+ (1:3)] #prob.X
                 q_lift = X[k][((i-1)*13 + 3) .+ (1:4)] #prob.X
-                settransform!(frame["cable"]["$i"], cable_transform(r_lift, x_anc[i]))
-                settransform!(frame["lift$i"], compose(Translation(r_lift...),LinearMap(Quat(q_lift...))))
+                settransform!(vis["cable"]["$i"], cable_transform(r_lift, x_anc[i]))
+                settransform!(vis["lift$i"], compose(Translation(r_lift...),LinearMap(Quat(q_lift...))))
             end
-            settransform!(frame["platform"], compose(Translation(r_platform...),LinearMap(Quat(q_platform...))))
+            settransform!(vis["platform"], compose(Translation(r_platform...),LinearMap(Quat(q_platform...))))
         end
     end
-    MeshCat.setanimation!(vis,anim)
+    MeshCat.setanimation!(vis, anim)
 end

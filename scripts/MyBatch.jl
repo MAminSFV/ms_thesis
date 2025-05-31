@@ -6,33 +6,36 @@ using Distributions, Random
 using TrajectoryOptimization
 using Revise
 using Dates
+using MeshCat
+using Altro
+
+using ms_thesis
 
 const TO = TrajectoryOptimization
-#include("animation.jl")
-include("plotting.jl")
-include("problem.jl")
-include("methods.jl")
-# !SECTION
 
-# SECTION - Solver options
 
 verbose=false
 
 # First create UnconstrainedSolverOptions instead of iLQRSolverOptions
-opts_ilqr = TO.iLQRSolverOptions(verbose=verbose,
-      iterations=75)
 
-opts_al = AugmentedLagrangianSolverOptions{Float64}(verbose=verbose,
-    opts_uncon=opts_ilqr,
-    cost_tolerance=1.0e-5,
-    constraint_tolerance=1.0e-3,
-    cost_tolerance_intermediate=1.0e-4,
-    iterations=20,
-    penalty_scaling=10.0,
-    penalty_initial=1.0e-3)
-# !SECTION
+#opts_ilqr = TO.iLQRSolverOptions(verbose=verbose,
+#      iterations=75)
+#
+#opts_al = AugmentedLagrangianSolverOptions{Float64}(verbose=verbose,
+#    opts_uncon=opts_ilqr,
+#    cost_tolerance=1.0e-5,
+#    constraint_tolerance=1.0e-3,
+#    cost_tolerance_intermediate=1.0e-4,
+#    iterations=20,
+#    penalty_scaling=10.0,
+#    penalty_initial=1.0e-3)
 
-# SECTION - Set Params and Create the Problem
+opts = SolverOptions(
+    penalty_scaling=100.,
+    penalty_initial=0.1,
+)
+
+# Set Params and Create the Problem
 
 # Scenario, Config, & agent selection
 
@@ -43,7 +46,7 @@ config = :platform
 agent  = :platform_batch
 cable = :elastic
 
-tf = 0.1
+tf = 10
 dt = 0.01
 N = convert(Int,floor(tf/dt))+1 # Determining the Number of knot points
 # Using quaternions
@@ -73,12 +76,18 @@ TO.has_quat(prob.model)
 # !SECTION
 
 # SECTION - Solve the optimization problem + Simulation(Viz) @time
-solver = solve!(prob, opts_al)
+#solver = solve!(prob, opts_al)
+solver = ALTROSolver(prob, opts);
+solve!(solver)
 
-#vis = Visualizer()
-#open(vis)
+println("Cost: ", cost(solver))
+println("Constraint violation: ", max_violation(solver))
+println("Iterations: ", iterations(solver))
 
-#visualize_platform_batch(vis, prob.N, prob.dt, prob.x0, prob.X, prob.U, xf, platform_params, false, num_lift)
+vis = Visualizer()
+open(vis)
+
+visualize_platform_batch(vis, prob.N, prob.dt, prob.x0, prob.X, prob.U, xf, platform_params, false, num_lift)
 solver.stats[:iterations]
 
 max_violation(prob)
@@ -86,4 +95,3 @@ max_violation(prob)
 now = Dates.now()
 name = "Load Transportation with $num_lift Quadrotors - $(Dates.format(now, "yyyy-mm-dd_HH-MM-SS"))"
 plot_agents(prob.N, prob.dt, prob.x0, prob.X, prob.U, xf, name, num_lift)
-# !SECTION

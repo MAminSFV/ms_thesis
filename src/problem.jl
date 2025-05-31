@@ -1,6 +1,4 @@
 using Combinatorics
-include("models.jl")
-include("config_sets.jl")
 
 # NOTE - Problem.jl creates the optimization problem for each scenario by doing the following things:
 # 1. Setting the initial conditions
@@ -103,7 +101,7 @@ function gen_prob(agent, quad_params, load_params, r0_load=[0,0,0.25];
     mass_load = load_params.m::Float64
     mass_ext = load_params.m_ext::Float64
     mass_lift = quad_params.m::Float64
-    mass_platform = platform_params.m::Float64
+    mass_platform = agent == :platform_batch ? load_params.m::Float64 : load_params.m::Float64
 
     # SECTION - State/Controls Conditions
     # Load Pose Conditions
@@ -477,7 +475,7 @@ function gen_prob(agent, quad_params, load_params, r0_load=[0,0,0.25];
         if quat
             info[:quat] = [(4:7) .+ i for i in 0:n_lift:n_lift*num_lift]
         end
-        batch_params = (lift=quad_params, platform=platform_params) #NOTE - Loading the params
+        batch_params = (lift=quad_params, platform=load_params) #NOTE - Loading the params
         model_batch = Model(platform_batch_dynamics!, n_batch, m_batch, batch_params, info)
 
         # Initial and final conditions

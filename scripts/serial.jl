@@ -10,9 +10,8 @@ using Combinatorics
 using TrajectoryOptimization
 const TO = TrajectoryOptimization
 
-include("problem.jl")
-include("methods.jl")
-include("animation.jl")
+using ms_thesis
+
 # Solver options
 verbose=false
 

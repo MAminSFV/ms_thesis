@@ -1,10 +1,7 @@
 using ForwardDiff, LinearAlgebra, Plots, StaticArrays
 const TO = TrajectoryOptimization
 using BenchmarkTools
-
-include("animation.jl")
-include("problem.jl")
-include("methods.jl")
+using ms_thesis
 
 # Solver options
 verbose=false

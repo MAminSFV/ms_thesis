@@ -18,10 +18,7 @@ const TO = TrajectoryOptimization
 @everywhere using LinearAlgebra
 @everywhere using DistributedArrays
 @everywhere using ForwardDiff
-@everywhere include(joinpath(dirname(@__FILE__),"problem.jl"))
-@everywhere include(joinpath(dirname(@__FILE__),"methods_distributed.jl"))
-@everywhere include(joinpath(dirname(@__FILE__),"methods.jl"))
-@everywhere include(joinpath(dirname(@__FILE__),"models.jl"))
+using ms_thesis
 
 # Solver options
 verbose=false

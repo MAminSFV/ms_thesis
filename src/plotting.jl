@@ -3,8 +3,6 @@ using Plots
 using FileIO
 using LinearAlgebra
 
-include("models.jl")
-
 
 function plot_agents(N, dt, x0, X, U, xf, name ,num_lift)
     # Unpacking params

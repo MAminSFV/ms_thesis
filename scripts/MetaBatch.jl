@@ -1,14 +1,10 @@
-
 using ForwardDiff, LinearAlgebra, Plots, StaticArrays
 using Combinatorics
 using Distributions, Random
 using TrajectoryOptimization
+using ms_thesis
 
 const TO = TrajectoryOptimization
-include("animation.jl")
-include("problem.jl")
-include("methods.jl")
-
 
 verbose=false
 

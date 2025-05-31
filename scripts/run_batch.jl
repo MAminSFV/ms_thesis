@@ -1,10 +1,7 @@
-# NOTE - It works, but doesnt make sense much in some ways, have to look at the cost function
 using TrajectoryOptimization
 const TO = TrajectoryOptimization
 
-include(joinpath(@__DIR__, "animation.jl"))
-include(joinpath(@__DIR__, "problem.jl"))
-include(joinpath(@__DIR__, "methods.jl"))
+using ms_thesis
 
 # SECTION - Setting up the problem
 function setup(; num_lift=10)

@@ -3,9 +3,7 @@ using ForwardDiff, LinearAlgebra, Plots, StaticArrays
 using Combinatorics
 using TrajectoryOptimization
 const TO = TrajectoryOptimization
-include("animation.jl")
-include("problem.jl")
-include("methods.jl")
+using ms_thesis
 # !SECTION
 
 # SECTION - Solver options

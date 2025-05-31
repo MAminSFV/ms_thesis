@@ -1,6 +1,8 @@
+using Distributed
+using DistributedArrays
+
 # REVIEW - A very much complicated version of methods, I don't think I should change anything here.
 
-include("methods.jl")
 worker_quads(num_lift) = workers()[1:num_lift]
 
 DProbs = Union{DArray, SubArray{<:Problem, 1, <:DArray}}

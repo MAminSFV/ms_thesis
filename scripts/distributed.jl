@@ -21,10 +21,7 @@ const TO = TrajectoryOptimization
 @everywhere using LinearAlgebra
 @everywhere using DistributedArrays
 @everywhere using ForwardDiff
-@everywhere include(joinpath(dirname(@__FILE__),"problem.jl"))
-@everywhere include(joinpath(dirname(@__FILE__),"methods_distributed.jl"))
-@everywhere include(joinpath(dirname(@__FILE__),"methods.jl"))
-@everywhere include(joinpath(dirname(@__FILE__),"models.jl")) # ✓
+using ms_thesis
 # !SECTION
 
 # SECTION - Setting the problem, methods, scenario
@@ -88,14 +85,6 @@ cache = (X_cache=X_cache, U_cache=U_cache, X_lift=X_lift, U_lift=U_lift);
 
 # SECTION - Visualization
 
-include("animation.jl")
-vis = Visualizer()
-open(vis)
-visualize_quadrotor_lift_system(vis, sol, obs)
-settransform!(vis["/Cameras/default"], compose(Translation(-7,0, -3),LinearMap(RotX(0)*RotZ(0))))
-
-# grab frames
-settransform!(vis["/Cameras/default"], compose(Translation(3.5, 0, 6.),LinearMap(RotX(0)*RotY(-pi/3))))
 
 kk = [1,13,26,39,51]
 k = 51
