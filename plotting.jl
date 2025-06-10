@@ -1,9 +1,11 @@
-# NOTE - This is where the fun stuff happens!
 using Plots
+using LaTeXStrings
+using PGFPlotsX
 using FileIO
 using LinearAlgebra
 
-include("models.jl")
+#pgfplotsx()
+gr()
 
 
 function plot_agents(N, dt, x0, X, U, xf, name ,num_lift)
@@ -78,23 +80,27 @@ function plot_agents(N, dt, x0, X, U, xf, name ,num_lift)
         #rotors[i,:] = [u[j] for j in u_inds] #not the same type of stuff
     end
 
-    lwd = 4.
+    lwd = 3.
     wp = 800
     hp = 600
 
-    xp = plot(t, xAgents, lw = lwd, label = lbl, legend =:outertopright, size=(wp, hp), title = "$name - Agent State X Error", ylabel ="Error X (m)", xlabel="Time (s)")
-    yp = plot(t, yAgents, lw = lwd, label = lbl, legend =:outertopright, size=(wp, hp), title = "$name - Agent States Y Error", ylabel ="Error Y (m)", xlabel="Time (s)")
-    zp = plot(t, zAgents, lw = lwd, label = lbl, legend =:outertopright, size=(wp, hp), title = "$name - Agent States Z Error", ylabel ="Error Z (m)", xlabel="Time (s)")
-    q1p = plot(t, q1Agents, lw = lwd, label = lbl, legend =:outertopright, size=(wp, hp), title = "$name - Agent States Q₁ Error", ylabel ="Error Q₁ (m)", xlabel="Time (s)")
-    q2p = plot(t, q2Agents, lw = lwd, label = lbl, legend =:outertopright, size=(wp, hp), title = "$name - Agent States Q₂ Error", ylabel ="Error Q₂ (rad)", xlabel="Time (s)")
-    q3p = plot(t, q3Agents, lw = lwd, label = lbl, legend =:outertopright, size=(wp, hp), title = "$name - Agent States Q₃ Error", ylabel ="Error Q₃ (rad)", xlabel="Time (s)")
+    kw = (;xlabel = "Time (s)", size = (wp, hp),
+       lw = lwd, legend = :outertopright, label = lbl, minorgrid = true, fontfamily="serif-roman")
 
-    xdp = plot(t, xdAgents, lw = lwd, label = lbl, legend =:outertopright, size=(wp, hp), title = "$name - Agent Velocity", ylabel ="Ẋ (m/s)", xlabel="Time (s)")
-    ydp = plot(t, ydAgents, lw = lwd, label = lbl, legend =:outertopright, size=(wp, hp), title = "$name - Agent Velocity", ylabel ="Ẏ (m/s)", xlabel="Time (s)")
-    zdp = plot(t, zdAgents, lw = lwd, label = lbl, legend =:outertopright, size=(wp, hp), title = "$name - Agent Velocity", ylabel ="Ż (m/s)", xlabel="Time (s)")
-    qd1p = plot(t, qd1Agents, lw = lwd, label = lbl, legend =:outertopright, size=(wp, hp), title = "$name - Agent Velocity", ylabel ="Q̇₁ (rad/s)", xlabel="Time (s)")
-    qd2p = plot(t, qd2Agents, lw = lwd, label = lbl, legend =:outertopright, size=(wp, hp), title = "$name - Agent Velocity", ylabel ="Q̇₂ (rad/s)", xlabel="Time (s)")
-    qd3p = plot(t, qd3Agents, lw = lwd, label = lbl, legend =:outertopright, size=(wp, hp), title = "$name - Agent Velocity", ylabel ="Q̇₃ (rad/s)", xlabel="Time (s)")
+    xp = plot(t, xAgents, title = L"Agents' $X$ Error", ylabel = L"Error X ($m$)"; kw...)
+    yp = plot(t, yAgents, title = L"Agents' $Y$ Error", ylabel = L"Error Y ($m$)"; kw...)
+    zp = plot(t, zAgents, title = L"Agents' $Z$ Error", ylabel = L"Error Z ($m$)"; kw...)
+    q1p = plot(t, q1Agents, title = L"Agents' Q_1 Error", ylabel = "Error"; kw...)
+    q2p = plot(t, q2Agents, title = L"Agents' Q_2 Error", ylabel = "Error"; kw...)
+    q3p = plot(t, q3Agents, title = L"Agents' Q_3 Error", ylabel = "Error"; kw...)
+
+    xdp = plot(t, xdAgents, title = L"Agents'  \dot{X}   Velocity", ylabel = L"Velocity ($m/s$)"; kw...)
+    ydp = plot(t, ydAgents, title = L"Agents'  \dot{Y}   Velocity", ylabel = L"Velocity ($m/s$)"; kw...)
+    zdp = plot(t, zdAgents, title = L"Agents'  \dot{Z}   Velocity", ylabel = L"Velocity ($m/s$)"; kw...)
+
+    qd1p = plot(t, qd1Agents, title = L"Agent  \dot{Q}_1  Velocity", ylabel = "Velocity"; kw...)
+    qd2p = plot(t, qd2Agents, title = L"Agent  \dot{Q}_2  Velocity", ylabel = "Velocity"; kw...)
+    qd3p = plot(t, qd3Agents, title = L"Agent  \dot{Q}_3  Velocity", ylabel = "Velocity"; kw...)
 
     #state = plot(xp, q1p, yp, q2p, zp, q3p, layout=l) #FIXME label = lbl, title = "Agent States"
     #statedot = plot(xdp, qd1p, ydp, qd2p, zdp, qd3p, layout=l, title = "Agent State Velocities") #FIXME

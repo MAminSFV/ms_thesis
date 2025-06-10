@@ -1,42 +1,21 @@
 # Multi-agent Aerial Lift Trajectory Optimization
-TODO(Amin): Add a gifs of results
+TODO(Amin): Add a gifs of results when dependencies are updated fully
 
 ## Setup Guide
 
 ### Pre-requisites
 1. Git
 2. Github account
-3. Docker
+3. Julia version 1.6.7
+4. Julia VSCode extension
+
 
 ### Steps
 Clone repos using these commands:
 ```
-```
-Pull the dependency:
-```
-```
-Setup the dev container:
-```
-```
-Setup the Julia Project in Container:
-```
+git clone https://github.com/MAminSFV/ms_thesis.git
 ```
 
-#### How to build the docker container
-Please make sure you have the modules and run the following command from project root dir:
-```
-docker build -f .\.devcontainer\Dockerfile -t ghcr.io/maminsfv/ms-thesis-dev:latest .
-```
+Make sure the git-module is also pulled.
 
-## Reproducing the results
-After taking the setup steps, in the container, running this script:
-```
-julia 
-```
-
-
-## Caveats and needed fixes
-- [ ] Old and outdated software stack which needs to be stabilized
-- [ ] Code needs serious clean-up and modularization
-- [ ] Remake of the distributed case
-- [ ] Animations are broken for now
+Run MyBatch.jl and MetaBatch.jl for obtaining the results as plots using the `Julia: Execute in Active REPL` feature.

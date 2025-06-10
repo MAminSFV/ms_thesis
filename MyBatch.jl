@@ -36,15 +36,15 @@ opts_al = AugmentedLagrangianSolverOptions{Float64}(verbose=verbose,
 
 # Scenario, Config, & agent selection
 
-num_lift = 4 # Number of Quadrotors
+num_lift = 4 # Number of Quadrotors (can be changed, at least 3 lift agents are needed)
 
-scenario = :hover
+scenario = :hover           # Other options: :hover, :transport
 config = :platform
 agent  = :platform_batch
 cable = :elastic
 
-tf = 0.1
-dt = 0.01
+tf = 30
+dt = 0.005
 N = convert(Int,floor(tf/dt))+1 # Determining the Number of knot points
 # Using quaternions
 quat = true
@@ -84,6 +84,12 @@ solver.stats[:iterations]
 max_violation(prob)
 #generate date time
 now = Dates.now()
-name = "Load Transportation with $num_lift Quadrotors - $(Dates.format(now, "yyyy-mm-dd_HH-MM-SS"))"
+
+
+if scenario == :hover
+    name = "Hover with $num_lift Quadrotors - $(Dates.format(now, "yyyy-mm-dd_HH-MM-SS"))"
+else
+    name = "Transport with $num_lift Quadrotors - $(Dates.format(now, "yyyy-mm-dd_HH-MM-SS"))"
+end
+
 plot_agents(prob.N, prob.dt, prob.x0, prob.X, prob.U, xf, name, num_lift)
-# !SECTION
