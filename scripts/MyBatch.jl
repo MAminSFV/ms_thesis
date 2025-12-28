@@ -1,4 +1,3 @@
-# SECTION - Setup
 using ForwardDiff, LinearAlgebra, Plots, StaticArrays
 using Combinatorics
 using Rotations
@@ -29,11 +28,6 @@ verbose=false
 #    iterations=20,
 #    penalty_scaling=10.0,
 #    penalty_initial=1.0e-3)
-
-opts = SolverOptions(
-    penalty_scaling=100.,
-    penalty_initial=0.1,
-)
 
 # Set Params and Create the Problem
 
@@ -77,6 +71,11 @@ TO.has_quat(prob.model)
 
 # SECTION - Solve the optimization problem + Simulation(Viz) @time
 #solver = solve!(prob, opts_al)
+opts = SolverOptions(
+    penalty_scaling=100.,
+    penalty_initial=0.1,
+)
+
 solver = ALTROSolver(prob, opts);
 solve!(solver)
 

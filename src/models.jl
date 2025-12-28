@@ -1,4 +1,3 @@
-# SECTION - Model Parameters
 
 """
 A function that creates anchor positions on the platform. It basically distributes points on a circle equally in a deterministic fashion.
@@ -197,7 +196,6 @@ function lift_dynamics!(ẋ,x,u,params)
       #NOTE - The external force does not affect the rotational dynamics. It is assumed that the external force is applied at COM
       return tau, omega, J, Jinv
 end
-# !SECTION
 
 # SECTION - Point Load Batch Dynamics
 # REVIEW - What is the dimension of u?

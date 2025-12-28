@@ -11,6 +11,7 @@ using GeometryTypes
 using CoordinateTransformations
 using Combinatorics
 using TrajectoryOptimization
+using RobotDynamics
 const TO = TrajectoryOptimization
 
 # Include all source files
